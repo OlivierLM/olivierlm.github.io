@@ -1,0 +1,129 @@
+Le créateur d'[[http://r.duckduckgo.com/l/?kh=-1&uddg=http%3A%2F%2Fwww.ansible.com%2Fhome][Ansible]] en perd son latin… Il voit dans l'infrastructure
+immuable une utopie en passe de se réaliser grâce à des technologies
+comme Docker et considère que le concept de gestion centralisée de
+configuration est obsolescent…
+
+  - NdT :: Je n'ai pas traduit les citations figurant dans le texte
+           original, cependant — a contrario de celui-ci — elles sont
+           mises en exergue.
+
+*Version originale* : [[ http://michaeldehaan.net/post/118717252307/immutable-infrastructure-is-the-future][Immutable Infrastructure Is The Future]]
+
+----
+
+Tumblr déteste mes longs articles, alors en voilà un court.
+
+J'aime les systèmes immuables.  Ils sont le futur.
+
+Peut-être que c'est bizarre venant de quelqu'un qui a écrit un système
+d'automatisation majeur utilisé principalement pour ne *pas* suivre
+cette méthodologie ?  Essayons de rationaliser cela.
+
+Lors de mises à jour d'ampleur, j'ai vu les optimisations que vous
+devez faire pour vous assurer de ne pas mettre le feu à votre miroir
+de paquetages, ou la lenteur et le manque de fiabilité d'opérer sur
+l'internet.  Cela existe, vous pouvez l'optimiser, mais si vous
+pouviez effectuer votre déploiement d'un simple « clic », je pense que
+vous voudriez le faire.
+
+Je ne crois pas à l'épouvantail de la dérive de configuration, mais je
+crois que le seul moyen absolument sûr est de pouvoir effacer un
+système dans son ensemble.  Et la seule façon de vous assurer que vous
+n'y êtes pas attaché et pouvez le reconstruire dans l'urgence est de
+ne ressentir aucune peur à l'idée de le faire.
+
+Ironiquement, je *PREFÈRE* l'idée que les descriptions de
+l'automatisation peuvent être écrites en =bash=, parce que dans de
+telles descriptions (fichiers packer ou docker), il n'y a pas besoin
+de boucles, de déclarations conditionnelles, de ces choses qui
+craignent en =bash= — juste de l'installation de paquetages et des
+trucs de ce genre.  *La plupart* des développeurs n'ont probablement
+pas besoin d'apprendre un système d'automatisation de ce type et ils
+peuvent écrire du /baby/ =bash= comme vous le taperiez dans une
+console.  Assez simple.
+
+Et l'équipe sécurité, si elle utilise un système en couches (comme
+Docker), peut déployer une configuration de base de l'OS, et ils
+peuvent utiliser des Dockerfiles pour construire au dessus.
+
+Attention — je pense que les images doivent provenir d'un système de
+génération.  Utiliser des images en conserve fournies par n'importe
+qui comme base est imprudent.  J'étais de fait dans une /startup/ qui
+en était déjà convaincu il y a de nombreuses années (rPath), mais
+malheureusement elle était embourbée dans un système de paquetage
+personnalisé.  Mais ils avaient un générateur d'images cool, qui
+pouvait faire des images locales pour EC2 et VMware, sans avoir besoin
+de démarrer des instances sur le /cloud/.  Ce que j'aime beaucoup chez
+Docker comparé à disons-le, Packer.
+
+Mais ouais, gestion de configuration ?  Qu'est-ce que ça va devenir si
+je dis que le =bash= est ok ?  Le futur des systèmes de gestion de
+configuration se situe dans le déploiement d'infrastructures pour le
+/cloud/ sur lequel fonctionneront ensuite des systèmes immuables via
+un niveau API.
+
+Le besoin de systèmes d'orchestration pour effectuer les bascules de
+version est en quelque sorte le dernier besoin résiduel qui justifie
+leur présence sur le territoire des systèmes immuables.  Je recherche
+des fournisseurs de /cloud/ / virtualisation qui proposeraient
+éventuellement des API de déploiement continu comme flip
+(instance_group, load_balancer_id, version1, version2).
+
+Pour continuer, je considère les systèmes d'orchestration comme une
+réponse au besoin d'adopter un flux de travail, de fusionner avec les
+systèmes de construction, de produire des images, et peut-être
+d'essayer de fournir ces API de « niveau /cluster/  » en attendant que
+les /clouds/ le fassent nativement.
+
+Pour finir la tuyauterie d'une bascule de version est quelque chose
+que nous pourrions tous standardiser.  Il devrait être possible
+d'écrire un livre décrivant des moyens idiomatiques pour tous les
+fournisseurs de /cloud/ et la plupart ds systèmes de /cloud/ Docker,
+dans l'ensemble des 3 systèmes de configuration majeurs, en je dirai
+50 pages.  L'un des meilleurs exemples était la page décrivant la
+bascule avec Docker présenté par Jesse Keating autour du milieu de sa
+présentation.  Je pense que quelqu'un devrait le faire — la plupart
+des infrastructures correspondent à ce même motif.
+
+Je ne crois pas que les gens ne soient pas prêts pour ça.  Il existe
+des étapes simples.  D'abord, assurez-vous que toutes les données de
+votre système peuvent être externalisées — en utilisant RDS ou
+Cassandra.  Gardez vos journaux hors de votre système.  Utilisez
+quelque chose comme =logstash= ou Splunk.  Supervisez de l'extérieur.
+Assurez des mises à jour au fil de l'eau avec votre système
+d'automatisation classique.  Maintenant basculez simplement de votre
+système habituel vers une construction d'images, reproduisant la
+configuration de votre automatisation habituelle.  Vous avez terminé.
+
+
+So yeah, /there’s me in the corner, losing my religion./
+
+Les outils de configuration ont toujours leur place — dans la
+construction de systèmes automatisés qui permettent de se concentrer
+sur la logique métier, mais je pense qu'ils vont descendre le long de
+la pile pour réaliser des choses comme l'automatisation d'Openstack.
+Le futur à plus long terme sera fait de systèmes de /cloud/ /
+virtualisation de ce type s'approvisionnant eux-même, mais ils sont
+encore un peu trop compliqués dans leur manière de procéder à cette
+évolution, mais je sens que ça vient.
+
+Alors que PaaS n'est encore une réalité pour personne, je pense que
+l'idée de pousser votre déploiement entre deux version sous la forme
+d'une « API /cloud/  » sur un fournisseur de /cloud/ / virtualisation
+deviendra la réalité; jusqu'à ce que cela devienne un dû, et
+l'immuabilité deviendra de plus en plus naturelle au fil du temps.
+
+Il existe des étapes faciles pour démarrer dès maintenant.
+
+Donc ouais, est-ce que les gens vont écrire un peu moins dans les
+outils de gestion de configuration ?  Oui.  Mais ils existeront
+toujours sous les nuages.  En dernier lieu à la fin cela signifiera
+plus de temps pour chacun pour se concentrer sur la logique métier
+plutôt que de penser déploiements, c'est pourquoi je suis fan de cette
+idée.
+
+Pour moi, coder a toujours consisté à donner corps à des idées, par à
+coder en tant que tel.  Je suis cool.
+
+/Have I’ve said too much?  I’ve said enough./
+

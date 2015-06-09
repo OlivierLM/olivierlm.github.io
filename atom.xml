@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[AdminSystè⋅me]]></title>
-  <link href="http://olivierlm.github.io/atom.xml" rel="self"/>
-  <link href="http://olivierlm.github.io/"/>
-  <updated>2015-06-09T12:11:39+02:00</updated>
-  <id>http://olivierlm.github.io/</id>
+  <link href="https://adminsyste.me/atom.xml" rel="self"/>
+  <link href="https://adminsyste.me/"/>
+  <updated>2015-06-09T13:10:10+02:00</updated>
+  <id>https://adminsyste.me/</id>
   <author>
     <name><![CDATA[Olm]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Infrastructure Immuable]]></title>
-    <link href="http://olivierlm.github.io/blog/2015-06-09-infrastructure-immuable.html"/>
+    <link href="https://adminsyste.me/blog/2015-06-09-infrastructure-immuable.html"/>
     <updated>2015-06-09T00:00:00+02:00</updated>
-    <id>http://olivierlm.github.io/blog/infrastructure-immuable</id>
+    <id>https://adminsyste.me/blog/infrastructure-immuable</id>
     <content type="html"><![CDATA[<p>
 Le créateur d'<a href="http://r.duckduckgo.com/l/?kh=-1&uddg=http://www.ansible.com/home">Ansible</a> en perd son latin… Il voit dans l'infrastructure
 immuable une utopie en passe de se réaliser grâce à des technologies
